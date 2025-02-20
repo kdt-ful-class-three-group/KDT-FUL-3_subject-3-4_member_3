@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>새 글 작성</title>
 </head>
 <body>
-  <h1></h1>
+    <h1>새 글 작성</h1>
+    <form action="/post" method="POST">
+        <label>제목: <input type="text" name="title" required></label><br>
+        <label>내용: <textarea name="content" required></textarea></label><br>
+        <button type="submit">작성</button>
+    </form>
+    <a href="/posts">글 목록 보기</a>
 </body>
 </html>
