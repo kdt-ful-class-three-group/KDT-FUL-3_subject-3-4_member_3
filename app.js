@@ -7,9 +7,10 @@ const fs = require('fs')
 // url 분석(경로 및 퀴리 스트링으로 변환 )
 const url = require('url');
 // POST요청에서 데이터를 추출할때 사용
-const qurystring = require("qurystring");
+const querystring = require("querystring");
 const { error } = require('console');
 const { title } = require('process');
+const DATA_FILE = "data.json";
 
 // 서버 포트 설정
 const PORT = 8000;
@@ -33,15 +34,6 @@ const server = http.createServer((req, res) => {
 
 
 
-  // 홈페이지 (GET /)
-  // if (parsUrl.pathname === "/" && method === "GET") {
-  //   res.writeHead(200, {"Content-Type": 'text/html; charset=utf-8'});
-  //   res.end("<h1>홈페이지</h1><a href= '/post'>게시글 목록 보기</a>");
-  // }
-
-
-
-
   // 글 목록 페이지 (GET /posts)
   if (parsUrl.pathname === "/posts" && method === "GET") {
     fs.readFile(DATA_FILE, "utf-8", (err, data) => {
@@ -52,11 +44,11 @@ const server = http.createServer((req, res) => {
       }
 
       // JSON 데이터가 없으면 빈 배열 사용
-      const posts = JSON.pars(data || "[]");
+      const posts = JSON.parse(data || "[]");
       let html = "<h1>글 목록</h1>";
       
       // 글 목록을 HTML로 변환
-      posts.foreach(post => {html += `<p><a href="/post?id=${post.id}">${post.title}</a></p>`;
+      posts.forEach(post => {html += `<p><a href="/post?id=${post.id}">${post.title}</a></p>`;
       });
 
       html +=`<a href = "/">홈으로</a>`;
@@ -96,8 +88,8 @@ const server = http.createServer((req, res) => {
   }}); 
 
 
- if (parsedUrl.pathname === "/post" && method === "GET") {
-        const postId = parsedUrl.query.id; // URL에서 id 값 가져오기
+ if (parsUrl.pathname === "/post" && method === "GET") {
+        const postId = parsUrl.query.id; // URL에서 id 값 가져오기
 
         fs.readFile(DATA_FILE, "utf-8", (err, data) => {
             const posts = err ? [] : JSON.parse(data || "[]");
@@ -123,7 +115,7 @@ const server = http.createServer((req, res) => {
       const posts = err ? [] : JSON.parse(data || "[]");
 
       let html = `<h1>글 목록</h1><ul>`;
-      posts.foreach(post => {
+      posts.forEach(post => {
         html += `<li><a href="/post?id=${post.id}">${post.title}</a></li>`;
 
         res.writeHead(200, {"Content-Type": "text/html charset=utf-8"});
@@ -165,7 +157,7 @@ const server = http.createServer((req, res) => {
       });
 
       req.on("end", () => {
-        const parsData = qurystring.parse(body);
+        const parsData = querystring.parse(body);
         const newPost = {
           id: Data.now(),
           title : parsData.title,
@@ -203,6 +195,3 @@ const server = http.createServer((req, res) => {
       console.log(`서버 실 행 중... http://localhost:${PORT}`);
     });
   
-
-
-ㅇddd

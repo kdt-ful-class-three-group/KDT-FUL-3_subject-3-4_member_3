@@ -1,41 +1,97 @@
-<!-- <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>새 글 작성</title>
-</head>
-<body>
-    <h1>새 글 작성</h1>
-    <form action="/post" method="POST">
-        <label>제목: <input type="text" name="title" required></label><br>
-        <label>내용: <textarea name="content" required></textarea></label><br>
-        <button type="submit">작성</button>
-    </form>
-    <a href="/posts">글 목록 보기</a>
-</body>
-</html> -->
-
-
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>홈</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+   .formContainer{
+    border: 1px solid silver;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 2px 3px 4px 0px black;
+   } 
+
+   .contentbox {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+   }
+
+   .contentbox label {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    align-items: center;
+   }
+
+   .contentbox label input {
+    border-radius: 5px;
+    margin-left: 5px;
+    width: 600px;
+    height: 30px;
+   }
+
+   .contentTitle label textarea {
+    border-radius: 5px;
+    margin-left: 5px;
+    width: 600px;
+    height: 400px;
+    border: 1px solid black;
+
+   }
+
+   .contentTitle label{
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    /* align-items: center; */
+   }
+
+   .buttonContainer {
+    display: flex;
+    justify-content: center;
+
+   }
+
+   .buttonContainer button {
+    width: 200px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid rgb(72, 72, 72);
+    border-radius: 10px;
+   }
+
+   .buttonContainer button:hover {
+    background-color: rgb(236, 214, 255);
+   }
+
+  </style>
 </head>
 <body>
-    <h1>홈 페이지</h1>
-    <a href="/posts">📜 글 목록 보기</a>
-    
-    <h2>📝 새 글 작성</h2>
+  
+  <h1>📝 새 글 작성</h1>
+  <div class="formContainer">
+
     <form action="/post" method="POST">
+      
+      <div class="contentbox">
         <label>제목: <input type="text" name="title" required></label><br>
-        <label>내용: <textarea name="content" required></textarea></label><br>
-        <button type="submit">글 작성</button>
-    </form>
+      </div>
+        <div class="contentTitle">
+          <label>내용: <textarea name="content" required></textarea></label><br>
+        </div>
+        <div class="buttonContainer">
+          <button type="submit">글 작성</button>
+        </div>
+        
+      </div>
+  </form>
+  <br><br>
+
+  <a href="/posts">📜 글 목록 보기</a>
+
+    <script src="./app.js"></script>
 </body>
 </html>
-
