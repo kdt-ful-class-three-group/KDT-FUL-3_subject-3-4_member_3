@@ -6,6 +6,19 @@ const querystring = require("querystring");
 const DATA_FILE = "data.json";
 const PORT = 8000;
 
+// 날짜형식으로 변환하는 함수
+function getFormattedData() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2,"0");
+  const seconds = String(now.getSeconds()).padStart(2,"0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const method = req.method;
@@ -43,7 +56,7 @@ const server = http.createServer((req, res) => {
       }
 
       const newPost = {
-        id: Date.now(),
+        id: getFormattedData(),
         title: parsedData.title,
         content: parsedData.content,
       };
@@ -69,7 +82,7 @@ const server = http.createServer((req, res) => {
             return;
           }
 
-          res.writeHead(302, { Location: "/" });
+          res.writeHead(302, { Location: "/?success=true" });
           res.end();
         });
       });
