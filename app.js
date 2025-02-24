@@ -6,7 +6,6 @@ const querystring = require("querystring");
 const DATA_FILE = "data.json";
 const PORT = 8000;
 
-// 날짜형식으로 변환하는 함수
 function getFormattedData() {
   const now = new Date();
   const year = now.getFullYear();
@@ -19,16 +18,17 @@ function getFormattedData() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const method = req.method;
-
-  // 메인 페이지 제공 (GET 요청)
+  
+  console.log(req.method, ' ',req.url)
   if (parsedUrl.pathname === "/" && method === "GET") {
     fs.readFile("index.html", "utf-8", (err, data) => {
       if (err) {
         res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end("오류! 페이지를 찾을 수 없습니다.");
+        res.end("오류! 오류! 오류! 페이지를 찾을 수 없습니다.");
         return;
       }
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
@@ -37,32 +37,39 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 게시글 저장 (POST 요청)
-  if (parsedUrl.pathname === "/post" && method === "POST") {
+  if (parsedUrl.pathname === "/posts" && method === "POST") {
     let body = "";
-
+    //입력 데이터 받음
     req.on("data", (chunk) => {
       body += chunk.toString();
     });
-
+    //입력 데이터 받은 후
     req.on("end", () => {
+      //받은 데이터 > 객체로
       const parsedData = querystring.parse(body);
 
-      // 제목과 내용이 비어 있는지 확인
+      
+      // res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      // res.end("404 페이지를 찾을 수 없습니다. ");
+
+      //title, content 둘 중 하나가 없으면
       if (!parsedData.title || !parsedData.content) {
         res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
-        res.end(JSON.stringify({ message: "제목과 내용을 입력해주세요." }));
+        res.end(JSON.stringify({ message: "제목과 내용을 입력해주세요" }));
         return;
+
       }
 
+      //json 기록 방식
       const newPost = {
         id: getFormattedData(),
         title: parsedData.title,
         content: parsedData.content,
       };
 
-      // 파일에서 기존 데이터 읽기
+      //json을 읽겠다
       fs.readFile(DATA_FILE, "utf-8", (err, data) => {
+        //에러가 아니면 배열에 넣겠다
         let posts = [];
         if (!err && data) {
           try {
@@ -72,33 +79,68 @@ const server = http.createServer((req, res) => {
             posts = [];
           }
         }
-
-        // 새 게시글 추가 후 저장
+        //작성한 데이터를 넣겠다
         posts.push(newPost);
+        //작성한 데이터에 대해 json파일을 덮어씀
         fs.writeFile(DATA_FILE, JSON.stringify(posts, null, 2), (err) => {
           if (err) {
             res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-            res.end(JSON.stringify({ message: "글 작성에 실패했습니다." }));
+            res.end(JSON.stringify({ message: "글 작성에 실패했습니다. " }));
             return;
           }
-
-          res.writeHead(302, { Location: "/?success=true" });
-          res.end();
+          res.writeHead(302, { Location: "/posts.html" });
+          res.end(fs.readFileSync("posts.html"));
         });
       });
     });
 
+
     return;
   }
 
-  // 존재하지 않는 경로 처리
-  res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-  res.end("404 페이지를 찾을 수 없습니다.");
+  if (parsedUrl.pathname === "/posts.html" && method === "GET") {
+    res.writeHead(200,{'content-type':'text/html; charset=utf-8'})
+    res.end(fs.readFileSync('./posts.html'))
+  //   fs.readFile(DATA_FILE, "utf-8", (err, data) => {
+  //     if (err) {
+  //       res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+  //       res.end(JSON.stringify({ message: "글 목록을 불러오는 데 실패했습니다." }));
+  //       return;
+  //     }
 
-  
+  //     let posts = [];
+  //     try {
+  //       posts = JSON.parse(data);
+  //     } catch (error) {
+  //       console.error("JSON 파싱 오류:", error);
+  //     }
+
+  //     res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+  //     res.end(JSON.stringify(posts));  
+  //   });
+
+  //   res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+  //   res.end(fs.readFileSync("posts.html"));
+
+  //   return;
+  // } else {
+  //   res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+  //   res.end("404 페이지를 찾을 수 없습니다. ");
+
+  }
+
+  if (parsedUrl.pathname ==='/data.json'&& method === "GET"){
+    res.writeHead(200, {"content-type": "application/json; charset=utf-8"});
+    res.end(fs.readFileSync("./data.json"));
+  }
+
+  if (parsedUrl.pathname.includes("-") && parsedUrl.pathname.includes(":")&& method === "GET"){
+    const url = req.url;
+    console.log (url)
+  };
+
 });
 
-// 서버 실행 
 server.listen(PORT, () => {
   console.log(`✅ 서버 실행 중... http://localhost:${PORT}`);
 });
