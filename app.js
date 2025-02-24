@@ -69,8 +69,8 @@ const server = http.createServer((req, res) => {
             return;
           }
 
-          res.writeHead(201, { "Content-Type": "application/json; charset=utf-8" });
-          res.end(JSON.stringify({ message: "글 작성 완료!", post: newPost }));
+          res.writeHead(302, { Location: "/" });
+          res.end();
         });
       });
     });
@@ -81,6 +81,8 @@ const server = http.createServer((req, res) => {
   // 존재하지 않는 경로 처리
   res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
   res.end("404 페이지를 찾을 수 없습니다.");
+
+  
 });
 
 // 서버 실행 
