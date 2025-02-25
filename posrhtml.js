@@ -1,9 +1,21 @@
 
 
 const hmtlUl = {
-  makeLi: function(obj) {
-    let string = `<li> <p><span>${obj.title}</span> <span>${obj.content}</span> <span>${obj.id}</span></p> <button class="changeBtn">수정</button> <button>삭제</button> </li>`
+  //obj의 값들을 활용해서 문자열에 넣어주는 함수
+  //obj 예시 : {title:'aaa', content:'bbb',id:'ccc'}
 
+  makeLi: function(obj) {
+    let string = `<li> <p><span>${obj.title}</span> <span>${obj.content}</span> <span>${obj.id}</span></p> <button class="changeBtn">수정</button> <button onclick="location.href='/delete'">삭제</button> </li>`
+
+    //<li>
+    //  <p>
+    //   <span>${obj.title}</span>
+    //   <span>${obj.content}</span>
+    //   <span>${obj.id}</span>
+    //  </p>
+    //  <button class="changeBtn">수정</button>
+    //  <button>삭제</button>
+    // </li>
     return string
   }
 
@@ -76,7 +88,7 @@ const hmtlUl = {
             //p태그 안에 span태그 활용하기
             //input태그 안에 value값으로 사용하기 위해서
             const span = p[i].children
-            console.log(span)
+            console.log(span[0].textContent) //title
 
             p[i].innerHTML = '<span>'+span[0].textContent+'</span><input type="text" value="'+span[1].textContent+'" name="content"></input><span>'+span[2].textContent+'</span><input type="hidden" name="id" value="'+span[2].textContent+'"></input><button type="submit">작성완료</button>'
             // const btn = document.createElement('button')

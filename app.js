@@ -106,12 +106,16 @@ const server = http.createServer((req, res) => {
     let jsonArray = JSON.parse(jsonText)
 
     // json 데이터를 사용해서 li태그 만들기
+    // json 데이터 => 배열 : [{},{},...,{}]
     let pocket = ""
     for (let i=0; i<jsonArray.length; i++){
+
+      //pocket = '<li>...</li> <li>....</li> <li>....</li>'
+      //배열의 요소 개수 만큼 (배열의 길이만큼) li태그가 만들어짐
       pocket = pocket + htmlUlFunc.default.makeLi(jsonArray[i])
     }
 
-    // li 태그를 html안에 넣기
+    // li 태그문자열의 총합을 html안에 넣기
     let htmlString = htmlUlFunc.default.makeHtml(pocket)
     console.log(htmlString)
 
@@ -138,21 +142,48 @@ const server = http.createServer((req, res) => {
     console.log (url)
   };
 
-  if (parsedUrl.pathname === '/ChangeLink' && method === "POST"){
+  if (parsedUrl.pathname === '/changeLink' && method === "POST"){
     let body = ""
     req.on("data", function(data){
       body = body + data
       // body += data
     })
     req.on('end', function(){
-      console.log(body);
-      let dataJson = fs.readFileSync("data.json")
-      console.log(dataJson)
+      //받아온 데이터 : body
+      console.log('body',body);
+      //json배열의 요소 중에서 id가 body에서 받은 id와 동일한 요소에 대해 값을 덮어씌우기
+
+      //1. json파일을 읽어와서 객체(배열)로 바꾸기
+      //readFileSync로 가져온 data.json : Buffer타입
+      //toString을 사용해서 문자열로 바꿈
+      let dataJson = fs.readFileSync("data.json").toString()
+      let dataArray = JSON.parse(dataJson)
+      console.log(typeof dataArray) //object
+      //2. body로 받은 데이터를 객체로 바꾸기 : {contet='aaa',id='bbb'}
+      //id 값을 비교해주기 위해서 body로 받은 데이터도 객체로 바꾸는 것
+      let vsid = querystring.parse(body);
+      console.log(vsid)
+      //3. 반복문을 사용해서 body의 id값을 가진 요소 찾기
+      dataArray.forEach(function(findId){
+        //findId로 들어오는 값은 dataArray의 요소 = 객체
+
+        //findId의 id값과 vsid의 id값이 같으면 새로 덮어씌우기
+        if(findId.id===vsid.id){
+          findId.content = vsid.content
+        }
+      })
+      console.log(dataArray);
+      //4. 값을 덮어씌워주고 다시 json파일로 만들기
+      //json 파일에 JSON 문자열로 넣어주기
+      fs.writeFileSync('data.json',JSON.stringify(dataArray))
+      
+      res.writeHead(302,{location:'/posts.html'})
       res.end()
     })
   }
   
-  
+  // url이 /delete && method 가 GET일 때
+  if (parsedUrl.pathname === '/delete' && method === "GET")
 
 });
 
