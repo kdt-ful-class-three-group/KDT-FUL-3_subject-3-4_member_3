@@ -65,6 +65,9 @@
         const li = document.getElementsByTagName('li')
         li[i].prepend(form)
 
+        //p태그 안에 span태그 활용하기
+        //input태그 안에 value값으로 사용하기 위해서
+
         p[i].innerHTML = 'title<input type="text" value="content" name="content"></input>id<input type="hidden" name="id" value="id"></input><button type="submit">작성완료</button>'
         // const btn = document.createElement('button')
         // btn.type="submit"
