@@ -100,34 +100,26 @@ const server = http.createServer((req, res) => {
   }
 
   if (parsedUrl.pathname === "/posts.html" && method === "GET") {
+    // json 파일 가져오기
+    let jsonText = fs.readFileSync('./data.json').toString()
+    // console.log(JSON.parse(jsonText))
+    let jsonArray = JSON.parse(jsonText)
+
+    // json 데이터를 사용해서 li태그 만들기
+    let pocket = ""
+    for (let i=0; i<jsonArray.length; i++){
+      pocket = pocket + htmlUlFunc.default.makeLi(jsonArray[i])
+    }
+
+    // li 태그를 html안에 넣기
+    let htmlString = htmlUlFunc.default.makeHtml(pocket)
+    console.log(htmlString)
+
+    // 응답으로 html문자열 넣어주기
+
     res.writeHead(200,{'content-type':'text/html; charset=utf-8'})
-    res.end(fs.readFileSync('./posts.html'))
-  //   fs.readFile(DATA_FILE, "utf-8", (err, data) => {
-  //     if (err) {
-  //       res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-  //       res.end(JSON.stringify({ message: "글 목록을 불러오는 데 실패했습니다." }));
-  //       return;
-  //     }
-
-  //     let posts = [];
-  //     try {
-  //       posts = JSON.parse(data);
-  //     } catch (error) {
-  //       console.error("JSON 파싱 오류:", error);
-  //     }
-
-  //     res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-  //     res.end(JSON.stringify(posts));  
-  //   });
-
-  //   res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-  //   res.end(fs.readFileSync("posts.html"));
-
-  //   return;
-  // } else {
-  //   res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-  //   res.end("404 페이지를 찾을 수 없습니다. ");
-
+    res.end(htmlString)
+  
   }
 
   if(parsedUrl.pathname === '/list.html' && method === "GET"){
