@@ -1,17 +1,122 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>새 글 작성</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+   .formContainer{
+    border: 1px solid silver;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 2px 3px 4px 0px black;
+    width: 70%;
+    margin: 50px;
+   } 
+
+  .catalog {
+  display: flex;
+  justify-content: end;
+  padding-top: 30px;
+  padding-right: 20px;
+  }
+
+   .contentbox {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+   }
+
+   .contentbox label {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    align-items: center;
+   }
+
+   .contentbox label input {
+    border-radius: 5px;
+    margin-left: 5px;
+    width: 600px;
+    height: 30px;
+   }
+
+   .contentTitle label textarea {
+    border-radius: 5px;
+    margin-left: 5px;
+    width: 600px;
+    height: 400px;
+    border: 1px solid black;
+
+   }
+
+   .contentTitle label{
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    /* align-items: center; */
+   }
+
+   .buttonContainer {
+    display: flex;
+    justify-content: center;
+
+   }
+
+   .buttonContainer button {
+    width: 200px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid rgb(72, 72, 72);
+    border-radius: 10px;
+    margin-left: 50px;
+   }
+
+   .buttonContainer button:hover {
+    background-color: rgb(236, 214, 255);
+   }
+
+  </style>
 </head>
 <body>
-    <h1>새 글 작성</h1>
-    <form action="/post" method="POST">
+  
+  <div class="formContainer">
+    <h1>📝 새 글 작성</h1>
+
+    <form action="/posts" method="POST">
+      
+      <div class="contentbox">
         <label>제목: <input type="text" name="title" required></label><br>
-        <label>내용: <textarea name="content" required></textarea></label><br>
-        <button type="submit">작성</button>
-    </form>
-    <a href="/posts">글 목록 보기</a>
+      </div>
+        <div class="contentTitle">
+          <label>내용: <textarea name="content" required></textarea></label><br>
+        </div>
+        <div class="buttonContainer">
+          <button type="submit">글 작성</button>
+        </div>
+        
+        <div class="catalog">
+          <a href="./posts.html">글 목록 보기</a>
+        </div>
+      </div>
+  </form>
+  <br><br>
+
+
+    <!-- <script src="./app.js"></script> -->
+
+
 </body>
 </html>
