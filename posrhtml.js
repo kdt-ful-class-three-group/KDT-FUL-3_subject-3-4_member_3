@@ -78,7 +78,7 @@ const hmtlUl = {
             const span = p[i].children
             console.log(span)
 
-            p[i].innerHTML = '<span>${span[0]}</span><input type="text" value="${span[1]}" name="content"></input><span>${span[2]}</span><input type="hidden" name="id" value="${span[2]}"></input><button type="submit">작성완료</button>'
+            p[i].innerHTML = '<span>'+span[0].textContent+'</span><input type="text" value="'+span[1].textContent+'" name="content"></input><span>'+span[2].textContent+'</span><input type="hidden" name="id" value="'+span[2].textContent+'"></input><button type="submit">작성완료</button>'
             // const btn = document.createElement('button')
             // btn.type="submit"
             
