@@ -1,47 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>글 목록</title>
-  <style>
-    body {
-      margin: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .post-list {
-      list-style: none;
-      padding: 0;
-    }
-    .post-list li {
-      margin-bottom: 20px;
-    }
-    .post-list li a {
-      font-size: 20px;
-      text-decoration: none;
-      color: #333;
-    }
-    .post-list li a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
 
-  <h1>글 목록</h1>
-
-  <div>
-    <ul class="post-list">
-      <!-- 게시글 목록이 여기서 출력 -->
-    </ul>
-  </div>
-
-  <div>
-    <a href="/"> 글 작성으로 돌아가기</a>
-  </div>
 
   <script>
 

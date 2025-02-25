@@ -18,6 +18,7 @@ function getFormattedData() {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+const htmlUlFunc = require('./posrhtml')
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -129,16 +130,36 @@ const server = http.createServer((req, res) => {
 
   }
 
+  if(parsedUrl.pathname === '/list.html' && method === "GET"){
+    res.writeHead(200, {"content-type": "text/html"});
+    res.end(fs.readFileSync("./list/html"));
+  }
+
   if (parsedUrl.pathname ==='/data.json'&& method === "GET"){
     res.writeHead(200, {"content-type": "application/json; charset=utf-8"});
     res.end(fs.readFileSync("./data.json"));
   }
 
+  // pathname 안에 "-"와 ":"가 들어가 있으면..
   if (parsedUrl.pathname.includes("-") && parsedUrl.pathname.includes(":")&& method === "GET"){
     const url = req.url;
     console.log (url)
   };
 
+  if (parsedUrl.pathname === '/ChangeLink' && method === "POST"){
+    let body = ""
+    req.on("data", function(data){
+      body = body + data
+      // body += data
+    })
+    req.on('end', function(){
+      console.log(body);
+      let dataJson = fs.readFileSync("data.json")
+      console.log(dataJson)
+      res.end()
+    })
+  }
+  
   
 
 });
