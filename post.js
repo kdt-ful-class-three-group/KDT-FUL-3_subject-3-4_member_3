@@ -1,6 +1,6 @@
 
 
-  <script>
+  // <script>
 
 
     // '/posts' 경로에서 게시글 목록을 요청
@@ -29,8 +29,9 @@
       
 
       // console.log(list)
+      
 
-  </script>
+//   </script>
 
-</body>
-</html>
+// </body>
+// </html>

@@ -1,13 +1,14 @@
 
 
 const hmtlUl = {
+  // makeLi함수 htmlUl에 넣어서 묶어줌
   makeLi: function(obj) {
-    let string = `<li> <p>${obj.title} ${obj.content} ${obj.id}</p> <button class="changeBtn">수정</button> <button>삭제</button> </li>`
+    let string = `<li> <p><span>${obj.title}</span> <span>${obj.content}</span> <span>${obj.id}</span></p> <button class="changeBtn">수정</button> <button onclick="location.href='/delete'">삭제</button> </li>`
 
     return string
   }
 
-
+// makeHtml함수를 htmlUl에 넣어 묶어줌
   ,makeHtml: function(innerUl){
     let string = `<!DOCTYPE html>
     <html lang="ko">
@@ -72,8 +73,13 @@ const hmtlUl = {
     
             const li = document.getElementsByTagName('li')
             li[i].prepend(form)
+
+            // p 태그 안에 span태그 활용하기
+            // input태그 안에 value값으로 사용하기 위해서 
+            const span = p[i].children
+            console.log(span[0].textContent) // title
     
-            p[i].innerHTML = 'title<input type="text" value="content" name="content"></input>id<input type="hidden" name="id" value="id"></input><button type="submit">작성완료</button>'
+            p[i].innerHTML = '<span>'+span[0].textContent+'</span><input type="text" value="'+span[1].textContent+'" name="content"></input><span>'+span[2].textContent+'</span><input type="hidden" name="id" value="'+span[2].textContent+'"></input><button type="submit">작성완료</button>'
             // const btn = document.createElement('button')
             // btn.type="submit"
             
@@ -92,4 +98,5 @@ const hmtlUl = {
     return string
 }}
 
+// htmlUl을 내보냄
 export default hmtlUl
