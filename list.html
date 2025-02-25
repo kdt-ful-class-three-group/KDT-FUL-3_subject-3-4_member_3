@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+<h1>작성한 글</h1>
+
+<div id="contentDiv">
+<!-- 여기에 post.html의 a태그 내용 담을꺼야 -->
+</div>
+
+
+
+<div>
+  <button id="correction">수정하기</button>
+  <button id="delte">삭제하기</button>
+</div>
+
+<!-- 작성완료 버튼이 추가될 위치 -->
+<div id="buttonContainer"></div>
+
+
+<script>
+  // 요소 가져오기
+const content = document.getElementById("content");
+const button = document.getElementById("correction");
+const container = document.getElementById("buttonContainer");
+
+document.getElementById('correvtion').addEventListener('click', function(){
+   content.innerText = "수정이 완료 됐습니다.";
+   if (!document.getElementById("completeBtn")) {
+        const completeBtn = document.createElement("button"); // 버튼 생성
+        completeBtn.id = "completeBtn"; // ID 설정
+        completeBtn.innerText = "작성완료"; // 버튼 텍스트 설정
+        completeBtn.addEventListener("click", function () {
+            alert("작성 완료!"); // 클릭 시 알림 표시
+        });
+
+        container.appendChild(completeBtn); // 버튼을 컨테이너에 추가
+    }
+});
+
+fetch("http://localhost:8000/posts.html?${date}}") // 가짜 API 요청
+    .then(response => response.json()) // JSON 데이터로 변환
+    .then(data => console.log(data)) // 콘솔 출력
+    .catch(error => console.error("오류 발생:", error));
+  
+
+
+</script>
+
+</body>
+</html>

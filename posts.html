@@ -42,6 +42,8 @@
   </div>
 
   <script>
+
+
     // '/posts' 경로에서 게시글 목록을 요청
     fetch('./data.json')
       .then(response => response.json())
@@ -52,10 +54,14 @@
           listItem.innerHTML = `<a href="${post.id}">${post.title} - ${post.id}</a>`;
           postList.appendChild(listItem);
           console.log(post)
+
+          
           
         });
       })
       .catch(error => console.error('게시글을 불러오는 데 실패했습니다.', error));
+
+      
 
       // console.log(list)
 
