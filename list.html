@@ -44,7 +44,7 @@ document.getElementById('correvtion').addEventListener('click', function(){
     }
 });
 
-fetch("http://localhost:8000/posts.html?${date}}") // 가짜 API 요청
+fetch("http://localhost:8000/posts.html?${date}}") 
     .then(response => response.json()) // JSON 데이터로 변환
     .then(data => console.log(data)) // 콘솔 출력
     .catch(error => console.error("오류 발생:", error));
