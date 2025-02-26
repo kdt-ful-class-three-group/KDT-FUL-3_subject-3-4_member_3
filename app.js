@@ -32,19 +32,29 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const method = req.method;
   
+  const parsUrlwrite = function(res, number, type, data){
+    res.writeHead(number, { "Content-Type": `${type}; charset=utf-8` });
+    res.end(data);
+    return;
+  }
 
+  const locationWrite = function(res, number, type, data){
+    res.writeHead(number, { Location: type });
+              res.end(data);
+  }
   
   
   console.log(req.method, ' ',req.url)
   if (parsedUrl.pathname === "/" && method === "GET") {
     fs.readFile("index.html", "utf-8", (err, data) => {
       if (err) {
-        res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end("오류! 오류! 오류! 페이지를 찾을 수 없습니다.");
-        return;
+        parsUrlwrite(res, 404, "text/plain" , "오류오류!오류! 페이지를 찾을 수 없습니다.")
+
       }
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(data);
+
+      parsUrlwrite(res, 200, "text/html" , data)
+      // console.log(data)
+
     });
     return;
   }
@@ -67,13 +77,7 @@ const server = http.createServer((req, res) => {
       content: parsedData.content,
     };
 
-      //title, content 둘 중 하나가 없으면
-      if (!parsedData.title || !parsedData.content) {
-        res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
-        res.end(JSON.stringify({ message: "제목과 내용을 입력해주세요" }));
-        return;
-
-      }
+  
 
       //json을 읽겠다
       fs.readFile(DATA_FILE, "utf-8", (err, data) => {
@@ -93,18 +97,17 @@ const server = http.createServer((req, res) => {
         //작성한 데이터에 대해 json파일을 덮어씀
         fs.writeFile(DATA_FILE, JSON.stringify(posts, null, 2), (err) => {
           if (err) {
-            res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-            res.end(JSON.stringify({ message: "글 작성에 실패했습니다. " }));
+
+            parsUrlwrite(res, 404, "application/json", JSON.stringify({ message: "글 작성에 실패했습니다. " }))
+
             return;
           }
-          res.writeHead(302, { Location: "/posts.html" });
-          res.end(fs.readFileSync("posts.html"));
+
+          locationWrite(res, 302, "/posts.html", fs.readFileSync("posts.html"))
         });
       });
     });
 
-
-    return;
   }
 
   if (parsedUrl.pathname === "/posts.html" && method === "GET") {
@@ -126,19 +129,19 @@ const server = http.createServer((req, res) => {
 
     // 응답으로 html문자열 넣어주기
 
-    res.writeHead(200,{'content-type':'text/html; charset=utf-8'})
-    res.end(htmlString)
+
+    parsUrlwrite(res, 200, 'text/html', htmlString)
+
+
   
   }
 
   if(parsedUrl.pathname === '/list.html' && method === "GET"){
-    res.writeHead(200, {"content-type": "text/html"});
-    res.end(fs.readFileSync("./list/html"));
+    parsUrlwrite(res, 200, "text/html", fs.readFileSync("./list/html"))
   }
 
   if (parsedUrl.pathname ==='/data.json'&& method === "GET"){
-    res.writeHead(200, {"content-type": "application/json; charset=utf-8"});
-    res.end(fs.readFileSync("./data.json"));
+    parsUrlwrite(res, 200, "application/json", fs.readFileSync("./data.json"))
   }
 
   // pathname 안에 "-"와 ":"가 들어가 있으면..
@@ -186,10 +189,9 @@ const server = http.createServer((req, res) => {
       // json파일에 json문자열로 넣어준다. 
       fs.writeFileSync('data.json', JSON.stringify(dataArray))
 
-      res.writeHead(302, {Location:'/posts.html'})
-      
-
-      res.end()
+      // res.writeHead(302, {Location:'/posts.html'})
+      // res.end()
+      locationWrite(res, 302, '/posts.html', data)
     })
   }
   
@@ -225,8 +227,9 @@ console.log('delete제거한 url 출력', querystring.parse(idUrl))
     fs.writeFileSync('data.json',JSON.stringify(dataArray))
 
     // 다시 posts.html 요청할게 -> posts.html을 요청해줘
-    res.writeHead(302, {Location:'/posts.html'})
-        res.end()
+    // res.writeHead(302, {Location:'/posts.html'})
+    //     res.end()
+    locationWrite(res, 302, '/posts.html', data)
   }
   
 
@@ -235,3 +238,4 @@ console.log('delete제거한 url 출력', querystring.parse(idUrl))
 server.listen(PORT, () => {
   console.log(`✅ 서버 실행 중... http://localhost:${PORT}`);
 });
+
