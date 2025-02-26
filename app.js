@@ -34,12 +34,12 @@ const server = http.createServer((req, res) => {
   
 
   
-  // 
+  
   console.log(req.method, ' ',req.url)
   if (parsedUrl.pathname === "/" && method === "GET") {
     fs.readFile("index.html", "utf-8", (err, data) => {
       if (err) {
-        res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+        res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
         res.end("오류! 오류! 오류! 페이지를 찾을 수 없습니다.");
         return;
       }
@@ -114,6 +114,7 @@ const server = http.createServer((req, res) => {
     let jsonArray = JSON.parse(jsonText)
 
     // json 데이터를 사용해서 li태그 만들기
+    // default는 
     let pocket = ""
     for (let i=0; i<jsonArray.length; i++){
       pocket = pocket + htmlUlFunc.default.makeLi(jsonArray[i])
@@ -219,10 +220,10 @@ console.log('delete제거한 url 출력', querystring.parse(idUrl))
     // writeFilesyne는 파일이 없으면 만들어 주고, 있으면 덮어씌운다. 
     // data.json을 데이터어레이 값을 넣어줘
     // json파일에는 json문자열이 들어감
-    //stringfy는 문자열
+    // stringfy는 문자열
     // parce 객체로 바꾼다. 
     fs.writeFileSync('data.json',JSON.stringify(dataArray))
-    
+
     // 다시 posts.html 요청할게 -> posts.html을 요청해줘
     res.writeHead(302, {Location:'/posts.html'})
         res.end()
