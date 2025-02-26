@@ -3,7 +3,7 @@
 const hmtlUl = {
   // makeLi함수 htmlUl에 넣어서 묶어줌
   makeLi: function(obj) {
-    let string = `<li> <p><span>${obj.title}</span> <span>${obj.content}</span> <span>${obj.id}</span></p> <button class="changeBtn">수정</button> <button onclick="location.href='/delete'">삭제</button> </li>`
+    let string = `<li> <p><span>${obj.title}</span> <span>${obj.content}</span> <span>${obj.id}</span></p> <button class="changeBtn">수정</button> <button onclick="location.href='/delete/id=${obj.id}'">삭제</button> </li>`
 
     return string
   }

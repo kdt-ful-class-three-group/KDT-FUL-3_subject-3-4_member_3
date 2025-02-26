@@ -22,16 +22,19 @@ function getFormattedData() {
 
 
 // posrhtml.js에 있는 htmlUl함수를 ltmlUlFunc변수를 사용해서 불러오기
-// 단 posrhtml.js에서는 export defult를 사용해서 내보내야 한다. 
+// 단 posrhtml.js에서는 맨 마지막에 export defult를 작성해서  사용하여 내보내야 한다. 
 const htmlUlFunc = require('./posrhtml')
 // console.log(htmlUlFunc)
 
+
+// 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const method = req.method;
   
 
   
+  // 
   console.log(req.method, ' ',req.url)
   if (parsedUrl.pathname === "/" && method === "GET") {
     fs.readFile("index.html", "utf-8", (err, data) => {
@@ -189,9 +192,40 @@ const server = http.createServer((req, res) => {
     })
   }
   
-  // url이 /delete && method가 GET일 떄
-  if (parsedUrl.pathname === '/changeLink' && method === "GET"){
+  // url에 /delete가 포함되어있을 때 실행시켜줘
+  if (parsedUrl.pathname.includes('/delete') && method === "GET"){
+    // 1. url에서 id 값을 가져오기
+    // '/'로 쪼갬 req.url.splite('/')
+    // 예시: [' ' , 'delete', 'id=2025-02-24%12:34:50']
+    let idUrl = req.url. split('/')[2]
+console.log('delete제거한 url 출력', querystring.parse(idUrl))
+
+
+    // 2. data.json을 가져와서 객체(배열)로 바꾸기
+    let dataJson = fs.readFileSync("data.json").toString()
+      let dataArray = JSON.parse(dataJson)
+
+    // 3. 바꾼 배열의 요소 중에 url에서 가져온 id값을 가지고 있는지 확인
+    // url에서 가져온 id 값에 해당되는 요소의 순서(인덱스) 가져오기
+    let index = dataArray.findIndex(i => i.id === querystring.parse(idUrl).id)
+    console.log(index)
+
+    // 4. 해당 요소를 삭제
+    // splice를 인덱스 사용해주기
+    dataArray.splice(index,1)
+    console.log(dataArray)
+
+    // 5. 다시 data.json을 만들어 주기
+    // writeFilesyne는 파일이 없으면 만들어 주고, 있으면 덮어씌운다. 
+    // data.json을 데이터어레이 값을 넣어줘
+    // json파일에는 json문자열이 들어감
+    //stringfy는 문자열
+    // parce 객체로 바꾼다. 
+    fs.writeFileSync('data.json',JSON.stringify(dataArray))
     
+    // 다시 posts.html 요청할게 -> posts.html을 요청해줘
+    res.writeHead(302, {Location:'/posts.html'})
+        res.end()
   }
   
 
